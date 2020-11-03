@@ -16,17 +16,21 @@ const localLogin = new LocalStrategy( localOptions, async function(email, passwo
     let user = await models.User.findOne( { where: { email: email } } )
         .catch( err => { done(err, false) })
 
-    // compare password - is `password` equal to user.password
-    user.comparePasswords(password, (err, isMatch) => {
+    if(user){
+        // compare password - is `password` equal to user.password
+        user.comparePasswords(password, (err, isMatch) => {
+            if(err){ return done(err) }
+            if(!isMatch) { return done(null, false)}
 
-        if(err){ return done(err) }
-        if(!isMatch) { return done(null, false)}
+            // use passport done function
+            // this assigns the user to req.user property
+            return done(null, user)
 
-        // use passport done function
-        // this assigns the user to req.user property
-        return done(null, user)
+        })
+    } else {
+        done(null, false)   
+    }
 
-    })
 
 })
 

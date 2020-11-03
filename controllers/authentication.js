@@ -15,6 +15,8 @@ exports.signin = function (req, res, next){
     // return token . user is assigned to req by passport
     res.send( {token: tokenForUser(req.user)})
 
+
+
 }
 
 exports.signup = async function(req, res, next){
@@ -44,7 +46,6 @@ exports.signup = async function(req, res, next){
         .catch((error=>{
             return next(error)
         }))
-
     res.json({ token:tokenForUser(user)  })
     
 }

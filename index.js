@@ -5,9 +5,13 @@ const Sequelize = require('sequelize');
 const http = require('http')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
-const app = express()
 const router = require('./router')
 const session = require('express-session');
+const cors = require('cors')
+
+const app = express()
+
+
 
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
@@ -30,6 +34,8 @@ session_db.sync();
 // App Setup
 // add some middleware
 app.use(morgan('combined'))
+app.use(cors())
+
 app.use(bodyParser.json({type:'*/*'}))
 router(app)
 
